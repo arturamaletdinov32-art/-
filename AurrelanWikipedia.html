@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ауреллан — Википедия</title>
+    <style>
+        * { box-sizing: border-box; }
+        html, body { margin: 0; padding: 0; background: #f6f6f6; }
+        body {
+            font-family: sans-serif;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #202122;
+        }
+        a { color: #3366cc; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        a:visited { color: #795cb2; }
+
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #a7d7f9;
+            padding: 8px 16px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            font-size: 13px;
+        }
+        .header .logo {
+            font-family: 'Linux Libertine', Georgia, serif;
+            font-size: 22px;
+            font-weight: normal;
+            color: #000;
+            letter-spacing: 0.5px;
+        }
+        .header .logo small {
+            display: block;
+            font-size: 10px;
+            color: #54595d;
+            letter-spacing: 0;
+        }
+        .header .search {
+            margin-left: auto;
+            border: 1px solid #a2a9b1;
+            border-radius: 2px;
+            padding: 5px 10px;
+            font-size: 13px;
+            background: #fff;
+            width: 240px;
+        }
+        .header .search::placeholder { color: #72777d; }
+
+        .layout {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 16px;
+        }
+
+        .sidebar {
+            width: 176px;
+            flex-shrink: 0;
+            padding: 16px 8px 40px 0;
+            font-size: 12.5px;
+        }
+        .sidebar h3 {
+            font-size: 11px;
+            font-weight: normal;
+            color: #54595d;
+            margin: 12px 0 4px;
+            padding-bottom: 3px;
+            border-bottom: 1px solid #c8ccd1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .sidebar ul { list-style: none; margin: 0; padding: 0; }
+        .sidebar li { padding: 2px 0; }
+        .sidebar a { font-size: 12.5px; }
+
+        .content {
+            flex: 1;
+            min-width: 0;
+            background: #ffffff;
+            border: 1px solid #a7d7f9;
+            padding: 20px 32px 40px;
+            margin-bottom: 40px;
+        }
+
+        .article-title {
+            font-family: 'Linux Libertine', Georgia, 'Times New Roman', serif;
+            font-size: 28.8px;
+            font-weight: normal;
+            line-height: 1.3;
+            margin: 0 0 4px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #a2a9b1;
+            color: #000;
+        }
+        .article-subtitle {
+            font-size: 12.8px;
+            color: #54595d;
+            margin-bottom: 16px;
+        }
+
+        h2.section {
+            font-family: 'Linux Libertine', Georgia, serif;
+            font-size: 22px;
+            font-weight: normal;
+            margin: 28px 0 12px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #a2a9b1;
+            color: #000;
+        }
+        h3.subsection {
+            font-size: 15.5px;
+            font-weight: bold;
+            margin: 20px 0 8px;
+            color: #000;
+        }
+        h4.subsub {
+            font-size: 14px;
+            font-weight: bold;
+            margin: 16px 0 6px;
+            color: #202122;
+        }
+        p { margin: 0 0 12px; }
+
+        .infobox {
+            float: right;
+            width: 290px;
+            margin: 0 0 16px 20px;
+            background: #f8f9fa;
+            border: 1px solid #a2a9b1;
+            font-size: 12.8px;
+            line-height: 1.5;
+        }
+        .infobox-title {
+            background: #d6e6f8;
+            text-align: center;
+            padding: 8px 10px;
+            font-size: 15px;
+            font-weight: bold;
+            border-bottom: 1px solid #a2a9b1;
+        }
+        .infobox-image {
+            padding: 10px;
+            text-align: center;
+            border-bottom: 1px solid #a2a9b1;
+        }
+        .infobox-image svg,
+        .infobox-image img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #c8ccd1;
+            background: #fff;
+            display: block;
+            margin: 0 auto;
+        }
+        .infobox-image .caption {
+            font-size: 11.5px;
+            color: #54595d;
+            margin-top: 6px;
+        }
+        .infobox table { width: 100%; border-collapse: collapse; }
+        .infobox th, .infobox td {
+            padding: 6px 10px;
+            vertical-align: top;
+            border-bottom: 1px solid #e2e5e8;
+            text-align: left;
+        }
+        .infobox th {
+            background: #eaecf0;
+            width: 42%;
+            font-weight: bold;
+            color: #202122;
+        }
+        .infobox tr:last-child th, .infobox tr:last-child td { border-bottom: none; }
+        .infobox-section {
+            background: #d6e6f8;
+            text-align: center;
+            font-weight: bold;
+            padding: 6px;
+            font-size: 13px;
+            border-top: 1px solid #a2a9b1;
+            border-bottom: 1px solid #a2a9b1;
+        }
+
+        .toc {
+            display: inline-block;
+            background: #f8f9fa;
+            border: 1px solid #a2a9b1;
+            padding: 12px 20px 14px;
+            margin: 0 0 20px;
+            font-size: 13px;
+            min-width: 240px;
+        }
+        .toc-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 13.5px;
+            margin-bottom: 8px;
+        }
+        .toc ol {
+            list-style: none;
+            counter-reset: tocnum;
+            margin: 0;
+            padding: 0;
+        }
+        .toc li { counter-increment: tocnum; padding: 2px 0; }
+        .toc .num { color: #54595d; margin-right: 6px; }
+
+        .articles-list {
+            list-style: none;
+            counter-reset: artcounter;
+            padding: 0;
+            margin: 0;
+        }
+        .articles-list > li {
+            counter-increment: artcounter;
+            margin-bottom: 12px;
+            padding: 10px 14px;
+            background: #f8f9fa;
+            border-left: 3px solid #3366cc;
+            font-size: 14px;
+        }
+        .articles-list > li::before {
+            content: "Статья " counter(artcounter) ". ";
+            font-weight: bold;
+            color: #202122;
+        }
+        .articles-list > li .art-name { font-weight: bold; color: #000; }
+        .articles-list > li .sanction {
+            display: block;
+            margin-top: 4px;
+            font-size: 13.5px;
+            color: #54595d;
+        }
+        .articles-list > li:nth-child(3n) { border-left-color: #d33; }
+        .articles-list > li:nth-child(5n) { border-left-color: #14866d; }
+        .articles-list > li:nth-child(7n) { border-left-color: #ac6600; }
+        .articles-list > li:nth-child(11n) { border-left-color: #800080; }
+
+        .leader-box {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            background: #f8f9fa;
+            border: 1px solid #c8ccd1;
+            border-left: 4px solid #3366cc;
+            padding: 14px 18px;
+            margin: 12px 0 20px;
+        }
+        .leader-avatar {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #3366cc, #795cb2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        .leader-info .lbl {
+            font-size: 11.5px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #54595d;
+        }
+        .leader-info .nm {
+            font-size: 18px;
+            font-family: 'Linux Libertine', Georgia, serif;
+            color: #000;
+        }
+
+        .categories {
+            margin-top: 30px;
+            padding: 8px 12px;
+            background: #f8f9fa;
+            border: 1px solid #a2a9b1;
+            font-size: 12.5px;
+        }
+        .categories strong { margin-right: 8px; }
+        .categories a { margin-right: 6px; }
+
+        .footer {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 16px;
+            font-size: 12px;
+            color: #54595d;
+            border-top: 1px solid #c8ccd1;
+            text-align: center;
+        }
+
+        table.wikitable {
+            border-collapse: collapse;
+            background: #f8f9fa;
+            border: 1px solid #a2a9b1;
+            font-size: 13px;
+            margin: 12px 0 18px;
+            width: 100%;
+        }
+        table.wikitable th, table.wikitable td {
+            border: 1px solid #a2a9b1;
+            padding: 6px 10px;
+            text-align: left;
+            vertical-align: top;
+        }
+        table.wikitable th { background: #eaecf0; font-weight: bold; }
+
+        .references {
+            font-size: 12.5px;
+            color: #54595d;
+            margin: 0 0 20px 20px;
+        }
+
+        .map-large {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .map-large img {
+            max-width: 100%;
+            height: auto;
+            border: 1px solid #c8ccd1;
+            background: #fff;
+        }
+        .map-large .map-caption {
+            font-size: 12px;
+            color: #54595d;
+            margin-top: 6px;
+        }
+
+        @media (max-width: 900px) {
+            .infobox { float: none; width: 100%; margin: 0 0 16px; }
+        }
+        @media (max-width: 720px) {
+            .sidebar { display: none; }
+            .content { padding: 16px 16px 30px; }
+            .article-title { font-size: 24px; }
+            h2.section { font-size: 19px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <div class="logo">
+        Википедия
+        <small>Свободная энциклопедия</small>
+    </div>
+    <input class="search" type="text" placeholder="Поиск в Википедии">
+</div>
+
+<div class="layout">
+
+    <aside class="sidebar">
+        <h3>Навигация</h3>
+        <ul>
+            <li><a href="#">Заглавная страница</a></li>
+            <li><a href="#">Содержание</a></li>
+            <li><a href="#">Избранные статьи</a></li>
+            <li><a href="#">Случайная статья</a></li>
+            <li><a href="#">Текущие события</a></li>
+        </ul>
+        <h3>Участие</h3>
+        <ul>
+            <li><a href="#">Сообщить об ошибке</a></li>
+            <li><a href="#">Портал сообщества</a></li>
+            <li><a href="#">Форум</a></li>
+            <li><a href="#">Свежие правки</a></li>
+            <li><a href="#">Новые страницы</a></li>
+        </ul>
+        <h3>Инструменты</h3>
+        <ul>
+            <li><a href="#">Ссылки сюда</a></li>
+            <li><a href="#">Связанные правки</a></li>
+            <li><a href="#">Спецстраницы</a></li>
+            <li><a href="#">Постоянная ссылка</a></li>
+            <li><a href="#">Сведения о странице</a></li>
+        </ul>
+        <h3>Языки</h3>
+        <ul>
+            <li><a href="#">English</a></li>
+            <li><a href="#">Aurellan</a></li>
+        </ul>
+    </aside>
+
+    <main class="content">
+
+        <h1 class="article-title">Ауреллан</h1>
+        <div class="article-subtitle">Материал из Википедии — свободной энциклопедии</div>
+
+        <p style="font-style: italic; color: #54595d; margin: 0 0 14px 0;">
+            Эта статья — о вымышленном государстве. Об одноимённой валюте см.
+            <a href="#">Ауреллан (валюта)</a>.
+        </p>
+
+        <!-- ИНФОБОКС -->
+        <div class="infobox">
+            <div class="infobox-title">Ауреллан<br><span style="font-size:12px; font-weight:normal;">Aurellan</span></div>
+
+            <div class="infobox-image">
+                <!-- Флаг Ауреллана (заменён на img) -->
+                <img src="https://cdn.jsdelivr.net/gh/arturamaletdinov32-art/-@main/%D0%B0%D1%83%D1%80%D0%B5%D0%BB%D0%BB%D0%B0%D0%BD%20%D1%84%D1%83%D0%BB.jpg" alt="Флаг Ауреллана" width="200">
+                <div class="caption">Флаг Ауреллана</div>
+            </div>
+
+            <div class="infobox-image">
+                <!-- Территории Ауреллана на карте -->
+                <img src="https://cdn.jsdelivr.net/gh/arturamaletdinov32-art/-@main/%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8.jpg" alt="Территории Ауреллана на карте мира">
+                <div class="caption">Территории Ауреллана на карте мира (регион Азия)</div>
+            </div>
+
+            <table>
+                <tr><th>Столица</th><td>Ауро Град</td></tr>
+                <tr><th>Официальный язык</th><td>аурелланский</td></tr>
+                <tr><th>Правитель</th><td><a href="#">Криштиану Свиналду</a></td></tr>
+                <tr><th>Форма правления</th><td>конституционная монархия</td></tr>
+                <tr><th>Совет</th><td>Совет Ауреллана</td></tr>
+                <tr><th>Валюта</th><td>аурелланский дукат</td></tr>
+                <tr><th>Девиз</th><td>«Свобода, порядок, честь и процветание»</td></tr>
+            </table>
+
+            <div class="infobox-section">География</div>
+            <table>
+                <tr><th>Регион</th><td>Азия</td></tr>
+                <tr><th>Крупные города</th><td>Ауро Град, Челябинск, Моггстан</td></tr>
+                <tr><th>Соседи</th><td><a href="#">ОБИЧ, Соединенные Штаты Кошарии</a></td></tr>
+            </table>
+
+            <div class="infobox-section">Символика</div>
+            <table>
+                <tr><th>Флаг</th><td>синее полотнище,<br>золотая диагональ,<br>солнце с 8 лучами</td></tr>
+                <tr><th>Гимн</th><td>«Слава Ауреллу»</td></tr>
+                <tr><th>Основание</th><td>2026 год (по преданию)</td></tr>
+            </table>
+        </div>
+
+        <!-- ВВЕДЕНИЕ -->
+        <p>
+            <b>Ауреллан</b> (аурелл. <i>Aurellan</i>) — вымышленное государство,
+            созданное в рамках творческого проекта в 2026 году. Согласно
+            внутриигровой истории, страна представляет собой
+            конституционную монархию, в которой власть правителя ограничена
+            <a href="#">Советом Ауреллана</a> и <a href="#">Конституцией</a>.
+        </p>
+
+        <p>
+            Национальный девиз — <i>«Свобода, порядок, честь и процветание
+            Ауреллана»</i>. Особенностью государства является развитая
+            правовая система, включающая Конституцию из 20 статей и
+            Уголовный кодекс из 24 статей. Отдельного упоминания
+            заслуживает <a href="#">закон о защите котов</a>, действующий
+            на территории Ауреллана.
+        </p>
+
+        <p>
+            Ауреллан не признан ни одним реальным государством мира и
+            существует исключительно как проект его создателя.
+            Государственная символика — синее полотнище с золотой
+            диагональной полосой и солнечным символом — была разработана
+            в графическом редакторе в октябре 2026 года. Согласно карте,
+            территории государства охватывают обширные земли в регионе
+            <b>Азия</b>, гранича на западе с государством
+            <a href="#">ОБИЧ</a>, а на востоке с государством <a href="#">СШК</a>.
+        </p>
+
+        <!-- СОДЕРЖАНИЕ -->
+        <div class="toc">
+            <div class="toc-title">Содержание</div>
+            <ol>
+                <li><span class="num">1</span><a href="#history">История</a></li>
+                <li><span class="num">2</span><a href="#gov">Государственное устройство</a></li>
+                <li><span class="num">3</span><a href="#geo">География и символика</a></li>
+                <li><span class="num">4</span><a href="#const">Конституция Ауреллана</a></li>
+                <li><span class="num">5</span><a href="#criminal">Уголовный кодекс Ауреллана</a></li>
+                <li><span class="num">6</span><a href="#culture">Культура и традиции</a></li>
+                <li><span class="num">7</span><a href="#see">См. также</a></li>
+                <li><span class="num">8</span><a href="#notes">Примечания</a></li>
+            </ol>
+        </div>
+
+        <!-- ИСТОРИЯ -->
+        <h2 class="section" id="history">История</h2>
+        <p>
+            Ауреллан был основан в <b>2026 году</b> как творческий проект
+            пользователя, увлекающегося альтернативной историей и
+            вымышленными государствами. Название <i>«Ауреллан»</i> было
+            выбрано из списка предложенных вариантов, наряду с такими
+            названиями, как <i>Вальдория</i>, <i>Аркания</i>,
+            <i>Люмерия</i> и <i>Кайрория</i>.
+        </p>
+        <p>
+            Первым этапом становления государства стало создание
+            государственного флага. Ранние версии символа содержали
+            изображение флагштока и неба, однако впоследствии флаг был
+            упрощён до лаконичного полотнища с синим фоном, золотой
+            диагональной полосой и солнечным диском с восемью лучами.
+        </p>
+        <p>
+            Позднее была разработана карта страны, на которой были
+            обозначены «свои территории» в регионе Азия. Для удобства
+            восприятия раскраска карты была выполнена аккуратно, с чётким
+            выделением границ. Столицей государства был провозглашён
+            город <b>Ауро Град</b>.
+        </p>
+
+        <!-- ГОСУДАРСТВЕННОЕ УСТРОЙСТВО -->
+        <h2 class="section" id="gov">Государственное устройство</h2>
+        <p>
+            Согласно Конституции Ауреллана, страна является
+            <b>независимым, суверенным и единым государством</b>.
+            Власть в стране принадлежит народу, а её реализация
+            осуществляется через систему разделения властей.
+        </p>
+
+        <h3 class="subsection">Правитель</h3>
+        <div class="leader-box">
+            <div class="leader-avatar">К</div>
+            <div class="leader-info">
+                <div class="lbl">Глава государства</div>
+                <div class="nm">Криштиану Свиналду</div>
+            </div>
+        </div>
+        <p>
+            Правитель Ауреллана — <b>Криштиану Свиналду</b> — является
+            главой государства, однако его полномочия существенно
+            ограничены. В частности, правитель <b>не может единолично
+            менять законы, начинать войны или распоряжаться
+            государственной казной</b>. Все важные решения должны
+            утверждаться Советом страны.
+        </p>
+
+        <h3 class="subsection">Совет Ауреллана</h3>
+        <p>
+            Совет Ауреллана — высший законодательный орган государства.
+            В его полномочия входит принятие законов, контроль
+            государственного бюджета и надзор за действиями правителя.
+            Конституция может быть изменена только после голосования
+            Совета и одобрения большинства граждан.
+        </p>
+
+        <h3 class="subsection">Судебная власть</h3>
+        <p>
+            Судебная система Ауреллана является независимой. В стране
+            действует <a href="#">презумпция невиновности</a>: каждый
+            обвиняемый считается невиновным, пока его вина не будет
+            доказана в ходе честного суда.
+        </p>
+
+        <!-- ГЕОГРАФИЯ И СИМВОЛИКА -->
+        <h2 class="section" id="geo">География и символика</h2>
+        <p>
+            Ауреллан расположен в регионе <b>Азия</b>. Согласно
+            официальной карте, территории государства охватывают
+            обширные земли, включая Сибирь, Центральную Азию,
+            часть Китая, Индии и Юго-Восточной Азии. На Западе
+            Ауреллан граничит с государством <a href="#">ОБИЧ</a>, а на востоке с государством <a href="#">СШК</a>.
+            Столицей страны является город <b>Ауро Град</b>. Среди
+            других крупных городов упоминаются Челябинск и Моггостан.
+        </p>
+
+        <div class="map-large">
+            <img src="https://cdn.jsdelivr.net/gh/arturamaletdinov32-art/-@main/%D1%82%D0%B5%D1%80%D1%80%D0%B8%D1%82%D0%BE%D1%80%D0%B8%D0%B8.jpg" alt="Территории Ауреллана на карте мира (регион Азия)">
+            <div class="map-caption">Территории Ауреллана на карте мира (регион Азия)</div>
+        </div>
+
+        <h3 class="subsection">Флаг</h3>
+        <p>
+            Государственный флаг Ауреллана представляет собой
+            <b>синее полотнище с золотой диагональной полосой и
+            символом солнца с восемью лучами</b>. Согласно официальному
+            описанию в Конституции (Статья 3), именно эти элементы
+            являются обязательными для государственного флага.
+        </p>
+
+        <table class="wikitable">
+            <tr>
+                <th>Элемент</th>
+                <th>Значение</th>
+            </tr>
+            <tr>
+                <td>Синий фон</td>
+                <td>небо, свобода и бескрайние просторы Азии</td>
+            </tr>
+            <tr>
+                <td>Золотая диагональ</td>
+                <td>путь Ауреллана к процветанию</td>
+            </tr>
+            <tr>
+                <td>Солнце с 8 лучами</td>
+                <td>источник жизни и мудрости правителя</td>
+            </tr>
+        </table>
+
+        <h3 class="subsection">Гимн</h3>
+        <p>
+            Государственный гимн Ауреллана называется <i>«Слава
+            Ауреллу»</i>. Текст и мелодия гимна держатся в секрете
+            и, по заявлениям автора проекта, будут обнародованы
+            позднее.
+        </p>
+
+        <!-- КОНСТИТУЦИЯ -->
+        <h2 class="section" id="const">Конституция Ауреллана</h2>
+        <p>
+            Конституция Ауреллана — основной закон государства,
+            состоящий из <b>20 статей</b>. Ниже приведён её полный
+            текст.
+        </p>
+
+        <h4 class="subsub">Глава I. Основы государственного строя</h4>
+        <ol class="articles-list">
+            <li><span class="art-name">Государство.</span> Ауреллан является независимым, суверенным и единым государством. Власть принадлежит народу.</li>
+            <li><span class="art-name">Территория.</span> Территория Ауреллана неприкосновенна и не может быть изменена без решения граждан страны.</li>
+            <li><span class="art-name">Государственный флаг.</span> Государственным флагом Ауреллана является полотнище с синим фоном, золотой диагональной полосой и символом солнца с восемью лучами.</li>
+            <li><span class="art-name">Равенство граждан.</span> Все граждане Ауреллана равны перед законом. Запрещается дискриминация по происхождению, полу, языку, вере или внешности.</li>
+        </ol>
+
+        <h4 class="subsub">Глава II. Права и свободы</h4>
+        <ol class="articles-list" start="5">
+            <li><span class="art-name">Право на жизнь и безопасность.</span> Каждый человек имеет право на жизнь, личную свободу и защиту от насилия.</li>
+            <li><span class="art-name">Свобода слова.</span> Каждый гражданин имеет право свободно выражать своё мнение, если это не нарушает права других людей и не призывает к насилию.</li>
+        </ol>
+
+        <h4 class="subsub">Глава III. Органы власти</h4>
+        <ol class="articles-list" start="7">
+            <li><span class="art-name">Государственная власть.</span> Государственная власть разделяется на законодательную, исполнительную и судебную.</li>
+            <li><span class="art-name">Правитель Ауреллана.</span> Правитель является главой государства, но обязан соблюдать Конституцию и законы страны.</li>
+            <li><span class="art-name">Совет Ауреллана.</span> Совет принимает законы, контролирует государственный бюджет и следит за действиями правителя.</li>
+            <li><span class="art-name">Суд.</span> Суд является независимым. Каждый обвиняемый считается невиновным, пока его вина не доказана.</li>
+        </ol>
+
+        <h4 class="subsub">Глава IV. Социальные права</h4>
+        <ol class="articles-list" start="11">
+            <li><span class="art-name">Образование.</span> Каждый гражданин имеет право на бесплатное базовое образование.</li>
+            <li><span class="art-name">Здравоохранение.</span> Государство обязано обеспечивать граждан доступной медицинской помощью.</li>
+            <li><span class="art-name">Природа.</span> Природные богатства Ауреллана находятся под защитой государства. Загрязнение окружающей среды запрещено.</li>
+            <li><span class="art-name">Армия.</span> Вооружённые силы Ауреллана предназначены для защиты страны и не могут использоваться против собственного народа.</li>
+            <li><span class="art-name">Налоги.</span> Граждане и организации обязаны платить налоги, установленные законом. Налоги должны использоваться на развитие страны.</li>
+        </ol>
+
+        <h4 class="subsub">Глава V. Заключительные положения</h4>
+        <ol class="articles-list" start="16">
+            <li><span class="art-name">Защита животных.</span> Жестокое обращение с животными запрещено. Особую защиту получают домашние и редкие животные.</li>
+            <li><span class="art-name">Культура.</span> Государство охраняет исторические памятники, традиции, музыку, искусство и национальный язык.</li>
+            <li><span class="art-name">Изменение Конституции.</span> Конституция может быть изменена только после голосования Совета и одобрения большинства граждан.</li>
+            <li><span class="art-name">Мирная политика.</span> Ауреллан не начинает войны первым и стремится решать международные споры мирным путём.</li>
+            <li><span class="art-name">Главная обязанность гражданина.</span> Каждый гражданин обязан соблюдать законы, уважать других людей и защищать независимость Ауреллана.</li>
+        </ol>
+
+        <!-- УГОЛОВНЫЙ КОДЕКС -->
+        <h2 class="section" id="criminal">Уголовный кодекс Ауреллана</h2>
+        <p>
+            Уголовный кодекс Ауреллана — систематизированный
+            законодательный акт, устанавливающий преступность и
+            наказуемость деяний на территории страны. Кодекс состоит
+            из <b>24 статей</b>.
+        </p>
+
+        <h4 class="subsub">Преступления против личности</h4>
+        <ol class="articles-list">
+            <li><span class="art-name">Убийство.</span> Умышленное лишение жизни другого человека.
+                <span class="sanction">Наказание: лишение свободы от 15 до 25 лет; при особой жестокости — пожизненное заключение.</span></li>
+            <li><span class="art-name">Причинение тяжкого вреда здоровью.</span> Умышленное причинение тяжкого вреда здоровью.
+                <span class="sanction">Наказание: лишение свободы от 5 до 12 лет.</span></li>
+            <li><span class="art-name">Похищение человека.</span>
+                <span class="sanction">Наказание: лишение свободы от 8 до 18 лет; группой лиц или с оружием — от 15 до 25 лет.</span></li>
+            <li><span class="art-name">Изнасилование.</span>
+                <span class="sanction">Наказание: лишение свободы от 8 до 15 лет; группой лиц или против несовершеннолетнего — от 15 до 25 лет.</span></li>
+        </ol>
+
+        <h4 class="subsub">Преступления против собственности</h4>
+        <ol class="articles-list" start="5">
+            <li><span class="art-name">Кража.</span> Тайное хищение чужого имущества.
+                <span class="sanction">Наказание: штраф или лишение свободы до 3 лет; при крупном ущербе — от 5 до 10 лет.</span></li>
+            <li><span class="art-name">Грабёж.</span> Открытое хищение чужого имущества.
+                <span class="sanction">Наказание: лишение свободы от 3 до 7 лет; с насилием — от 6 до 12 лет.</span></li>
+            <li><span class="art-name">Разбой.</span> Нападение с целью хищения с насилием или угрозой оружием.
+                <span class="sanction">Наказание: лишение свободы от 8 до 15 лет; группой лиц — от 15 до 25 лет.</span></li>
+            <li><span class="art-name">Мошенничество.</span> Хищение путём обмана или злоупотребления доверием.
+                <span class="sanction">Наказание: штраф или лишение свободы до 5 лет; при особо крупном ущербе — до 12 лет.</span></li>
+        </ol>
+
+        <h4 class="subsub">Преступления против общественной безопасности</h4>
+        <ol class="articles-list" start="9">
+            <li><span class="art-name">Вандализм.</span> Умышленная порча зданий, памятников, транспорта или общественного имущества.
+                <span class="sanction">Наказание: штраф, исправительные работы или лишение свободы до 3 лет.</span></li>
+            <li><span class="art-name">Незаконное владение оружием.</span>
+                <span class="sanction">Наказание: лишение свободы от 3 до 8 лет.</span></li>
+            <li><span class="art-name">Государственная измена.</span> Переход на сторону врага, передача секретных сведений или помощь противнику.
+                <span class="sanction">Наказание: лишение свободы от 20 лет до пожизненного.</span></li>
+            <li><span class="art-name">Шпионаж.</span> Сбор или передача секретной информации иностранному государству.
+                <span class="sanction">Наказание: лишение свободы от 12 до 25 лет.</span></li>
+            <li><span class="art-name">Террористический акт.</span> Взрыв, поджог или иное действие, создающее угрозу жизни людей.
+                <span class="sanction">Наказание: лишение свободы от 20 лет до пожизненного.</span></li>
+        </ol>
+
+        <h4 class="subsub">Должностные и экологические преступления</h4>
+        <ol class="articles-list" start="14">
+            <li><span class="art-name">Коррупция.</span> Получение или дача взятки должностному лицу.
+                <span class="sanction">Наказание: штраф, конфискация имущества и лишение свободы до 15 лет.</span></li>
+            <li><span class="art-name">Превышение полномочий.</span> Использование должностным лицом своих полномочий вопреки закону.
+                <span class="sanction">Наказание: лишение свободы до 10 лет с запретом занимать государственные должности.</span></li>
+            <li><span class="art-name">Загрязнение окружающей среды.</span> Умышленное загрязнение земли, воздуха или воды.
+                <span class="sanction">Наказание: штраф и лишение свободы до 7 лет.</span></li>
+            <li><span class="art-name">Жестокое обращение с животными.</span> Повлёкшее гибель или тяжёлые повреждения животного.
+                <span class="sanction">Наказание: штраф или лишение свободы до 5 лет.</span></li>
+        </ol>
+
+        <h4 class="subsub">Иные преступления</h4>
+        <ol class="articles-list" start="18">
+            <li><span class="art-name">Массовые беспорядки.</span> Организация беспорядков, сопровождающихся насилием, разрушениями или поджогами.
+                <span class="sanction">Наказание: лишение свободы от 8 до 15 лет.</span></li>
+            <li><span class="art-name">Ложное сообщение об опасности.</span> Заведомо ложное сообщение о взрыве, нападении или другой угрозе.
+                <span class="sanction">Наказание: лишение свободы до 5 лет.</span></li>
+            <li><span class="art-name">Самосуд.</span> Самовольное наказание человека без решения суда.
+                <span class="sanction">Наказание: штраф или лишение свободы до 4 лет.</span></li>
+        </ol>
+
+        <h4 class="subsub">Общие положения кодекса</h4>
+        <ol class="articles-list" start="21">
+            <li><span class="art-name">Наказание за особо тяжкие преступления.</span> За особо тяжкие преступления суд может назначить пожизненное лишение свободы. Смертная казнь на территории Ауреллана запрещена.</li>
+            <li><span class="art-name">Возраст уголовной ответственности.</span> Уголовная ответственность наступает с 16 лет, а за особо тяжкие преступления — с 14 лет.</li>
+            <li><span class="art-name">Необходимая оборона.</span> Не считается преступлением причинение вреда нападающему, если это было необходимо для защиты жизни, здоровья или имущества.</li>
+            <li><span class="art-name">Крайняя необходимость.</span> Действие не считается преступлением, если оно совершено для предотвращения большей опасности и другого способа спастись не было.</li>
+        </ol>
+
+        <!-- КУЛЬТУРА -->
+        <h2 class="section" id="culture">Культура и традиции</h2>
+        <p>
+            Культурная жизнь Ауреллана строится вокруг нескольких
+            ключевых принципов: уважения к свободе, защиты природы
+            и особого отношения к домашним животным. Отдельного
+            внимания заслуживает <b>закон о защите котов</b>, согласно
+            которому каждый кот на территории страны имеет право на
+            еду, сон, безопасность и уважительное отношение.
+            Обидевший кота обязан пройти курс исправления под
+            контролем самого кота.
+        </p>
+        <p>
+            Государственным праздником страны является
+            <b>День Ауреллана</b>, который отмечается один раз в год
+            и сопровождается парадами, концертами, ярмарками и
+            массовым поеданием праздничной еды.
+        </p>
+        <p>
+            Государственный язык — <i>аурелланский</i>. При этом
+            Конституция гарантирует каждому гражданину право
+            сохранять и использовать родной язык.
+        </p>
+
+        <h3 class="subsection">Национальные ценности</h3>
+        <ul style="margin: 0 0 16px 20px;">
+            <li>Свобода — как основа государственности.</li>
+            <li>Порядок — как гарант стабильности.</li>
+            <li>Честь — как личный ориентир каждого гражданина.</li>
+            <li>Процветание — как общая цель страны.</li>
+        </ul>
+
+        <!-- СМ. ТАКЖЕ -->
+        <h2 class="section" id="see">См. также</h2>
+        <ul style="margin: 0 0 16px 20px;">
+            <li><a href="#">Конституция Ауреллана</a></li>
+            <li><a href="#">Уголовный кодекс Ауреллана</a></li>
+            <li><a href="#">Совет Ауреллана</a></li>
+            <li><a href="#">Криштиану Свиналду</a></li>
+            <li><a href="#">Флаг Ауреллана</a></li>
+            <li><a href="#">ОБИЧ</a></li>
+            <li><a href="#">СШК</a></li>
+            <li><a href="#">Список вымышленных государств</a></li>
+        </ul>
+
+        <!-- ПРИМЕЧАНИЯ -->
+        <h2 class="section" id="notes">Примечания</h2>
+        <ol class="references">
+            <li>Все сведения об Ауреллане носят вымышленный характер и не относятся к реальной политике, праву или географии.</li>
+            <li>Государство существует исключительно в рамках творческого проекта его автора.</li>
+            <li>Официальные источники информации об Ауреллане отсутствуют.</li>
+            <li>Название и символика государства разработаны в 2026 году.</li>
+            <li>Данная статья создана в информационных целях.</li>
+        </ol>
+
+        <!-- КАТЕГОРИИ -->
+        <div class="categories">
+            <strong>Категории:</strong>
+            <a href="#">Вымышленные государства</a> |
+            <a href="#">Творческие проекты</a> |
+            <a href="#">Ауреллан</a> |
+            <a href="#">Конституционная монархия</a> |
+            <a href="#">Альтернативная история</a> |
+            <a href="#">Азия</a>
+        </div>
+
+    </main>
+</div>
+
+<div class="footer">
+    Страница в последний раз была отредактирована 4 октября 2026 в 12:30.<br>
+    Текст доступен по лицензии <a href="#">Creative Commons Attribution-ShareAlike</a>;
+    в отдельных случаях могут действовать дополнительные условия.<br>
+    <a href="#">Политика конфиденциальности</a> ·
+    <a href="#">О Википедии</a> ·
+    <a href="#">Отказ от ответственности</a>
+</div>
+
+</body>
+</html>
